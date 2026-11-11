@@ -1,0 +1,128 @@
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: #f8efed; color: #754a50; font: 16px/1.6 Arial, sans-serif; }
+main { padding: 0 30px; }
+section { margin: 35px 0; }
+.row { display: flex; flex-wrap: wrap; margin: 0 -12px; }
+.row > [class*="col-"] { width: 100%; padding: 0 12px; }
+.row > .col-6 { width: 50%; }
+.mb-3 { margin-bottom: 16px; }
+.mb-4 { margin-bottom: 24px; }
+.mt-4 { margin-top: 24px; }
+.h-100 { height: 100%; }
+.align-items-center { align-items: center; }
+.btn-block { width: 100%; }
+.text-center, h2, h3, .voved { text-align: center; }
+h2 { font-size: 29px; }
+h3 { font-size: 22px; }
+h4 { font-size: 19px; }
+h2, h3 { margin: 0 0 20px; }
+.voved { max-width: 760px; margin: 0 auto 25px; }
+.btn, .reakcii button { border: 0; border-radius: 18px; padding: 8px 18px; background: #c98283; color: #251719; cursor: pointer; }
+.btn:hover, .reakcii button:hover, .grad-kopce:hover { background: #e8b7b4; }
+.btn-sm { padding: 5px 12px; font-size: 12px; }
+
+
+header, nav { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+header { justify-content: space-between; padding: 18px 30px; background: #fffcfa; border-bottom: 4px solid #e8b7b4; }
+header h1, #pocetna h2 { font: bold 35px Georgia, serif; }
+header h1 { margin: 0; }
+header h1 span { display: block; font: 12px Arial, sans-serif; letter-spacing: 3px; text-align: center; }
+.meni-link { color: #754a50; padding: 9px 13px; border-radius: 20px; text-decoration: none; }
+.meni-link:hover { background: #f8efed; }
+.meni-link.izbrano, footer { background: #754a50; color: #fffcfa; }
+.card, .grad-kopce { background: #fffcfa; border-radius: 12px; overflow: hidden; height: 100%; }
+.card-img-top, .grad-kopce img, .foto-ramka > img { display: block; width: 100%; object-fit: cover; }
+.card-img-top { height: 230px; }
+.card-body { padding: 18px; }
+.card-body h4 { font-size: 18px; margin: 8px 0; }
+.card-body p { font-size: 14px; color: #79615b; }
+.card-body small { font-size: 12px; font-weight: bold; }
+
+
+.bela-kutija, .vodic, .foto-ramka { background: #fffcfa; padding: 24px; border-radius: 14px; }
+.bela-kutija h3, .vodic h3 { text-align: left; }
+label { display: block; margin: 10px 0 5px; }
+input[type="text"], input[type="number"], input[type="email"], input[type="password"], select, textarea { width: 100%; padding: 9px 11px; margin-bottom: 12px; border: 1px solid #e8b7b4; border-radius: 8px; background: white; color: #754a50; }
+.slika-planer, .slika-najava { width: 100%; height: 430px; object-fit: cover; border-radius: 14px; }
+.slika-planer { height: 100%; min-height: 320px; max-height: 450px; }
+.plan-karticka { height: 100%; padding: 17px; border: 1px solid #e8b7b4; border-radius: 12px; background: #f8efed; }
+.plan-karticka p { margin-bottom: 9px; }
+.plan-kategorija, .komentari { font-size: 13px; }
+.poraka { margin: 15px 0 0; }
+#trosoci .row { margin: 0; }
+#trosoci strong { font-size: 21px; }
+
+
+.grad-kopce 
+{ display: block;
+  width: 100%; 
+  border: 0; 
+  padding: 0 0 10px; 
+  color: #754a50; 
+  cursor: pointer;
+}
+.grad-kopce img { height: 230px; margin-bottom: 8px; }
+.grad-kopce strong { font-size: 15px; }
+#prikazVodic, #fotografii { padding-top: 15px; }
+.vodic { max-width: 750px; margin: auto; }
+.vodic h4 { font-size: 17px; }
+.vodic ol { padding-left: 22px; }
+.vodic li { margin-bottom: 6px; }
+.beleshka { background: #f8efed; padding: 12px; border-radius: 8px; }
+.foto-ramka 
+{ margin: 0; 
+  padding: 10px 10px 15px; 
+  border: 2px solid #e8b7b4; 
+}
+.foto-ramka > img { height: 500px; }
+figcaption { font-size: 17px; font-weight: bold; padding: 10px 3px; }
+.reakcii, .komentar-forma { display: flex; align-items: center; gap: 8px; }
+.reakcii { flex-wrap: wrap; margin-bottom: 10px; font-size: 12px; }
+.reakcii button { font-size: 12px; padding: 4px 9px; }
+.komentar-forma input { flex: 1; min-width: 0; margin-bottom: 0; font-size: 13px; }
+.komentari { padding-left: 20px; margin: 10px 0 0; overflow-wrap: anywhere; }
+#galerija { margin-bottom: 15px; }
+#anketa { margin-top: 15px; }
+
+
+#anketa .belaKutija { max-width: 900px; margin: auto; }
+.prasanje { margin: 16px 0; border: 0; padding: 0; }
+.prasanje legend { font-size: 17px; font-weight: bold; }
+.prasanje label { display: inline-block; margin-right: 15px; }
+input[type="range"] { width: 100%; }
+footer { padding: 28px 15px; text-align: center; }
+footer a { color: inherit; }
+
+.row > .col-sm-6,
+.row > .col-md-6 
+{
+    width: 50%;
+}
+
+.row > .col-md-3 
+{
+    width: 25%;
+}
+
+.row > .col-md-4 
+{
+    width: 33.3333%;
+}
+
+.row > .col-md-7 
+{
+    width: 58.3333%;
+}
+
+.row > .col-md-5 
+{
+    width: 41.6667%;
+}
+
+hr
+{
+  color:#c98283;
+  
+}

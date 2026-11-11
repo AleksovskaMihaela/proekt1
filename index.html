@@ -1,0 +1,693 @@
+<!doctype html>
+<html lang="mk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Travel Planner</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+<header id="vrv">
+  <h1>Travel Planner <span>by MA</span></h1>
+  <nav>
+    <a href="#pocetna" class="meni-link izbrano" onclick="oznaciMeni(this)">Почетна</a>
+    <a href="#planer" class="meni-link" onclick="oznaciMeni(this)">Мој планер</a>
+    <a href="#blog" class="meni-link" onclick="oznaciMeni(this)">Водич</a>
+    <a href="#galerija" class="meni-link" onclick="oznaciMeni(this)">Галерија</a>
+    <a href="#anketa" class="meni-link" onclick="oznaciMeni(this)">Анкета</a>
+    <a href="#najava" class="meni-link" onclick="oznaciMeni(this)">Најава</a>
+  </nav>
+</header>
+<main class="container-fluid">
+  <section id="pocetna">
+    <h2>Каде патуваме следно?</h2>
+    <p class="voved">Од Paris до снежниот Lapland: избери дестинација и испланирај го следното патување.</p>
+    <h3>Популарни дестинации</h3>
+    <div id="destinacii" class="row">
+      <div class="col-12 col-sm-6 col-md-3 mb-4"><div class="card">
+        <img src="paris.jpg" class="card-img-top" alt="Paris">
+        <div class="card-body"><small>Културен туризам</small><h4>Paris, France</h4>
+          <p>Прошетки покрај Сена, музеи и мали кафулиња.</p>
+          <button class="btn btn-block" onclick="otvoriGalerija('galerija-paris')">Види слики</button>
+        </div>
+      </div></div>
+      <div class="col-12 col-sm-6 col-md-3 mb-4"><div class="card">
+        <img src="santorini.jpg" class="card-img-top" alt="Santorini">
+        <div class="card-body"><small>Релаксација</small><h4>Santorini, Greece</h4>
+          <p>Бели куќи, сини куполи и поглед кон морето.</p>
+          <button class="btn btn-block" onclick="otvoriGalerija('galerija-santorini')">Види слики</button>
+        </div>
+      </div></div>
+      <div class="col-12 col-sm-6 col-md-3 mb-4"><div class="card">
+        <img src="StMoritz.jpg" class="card-img-top" alt="St. Moritz">
+        <div class="card-body"><small>Природа и авантура</small><h4>St. Moritz, Switzerland</h4>
+          <p>Планини, езеро и прекрасна зимска атмосфера.</p>
+          <button class="btn btn-block" onclick="otvoriGalerija('galerija-moritz')">Види слики</button>
+        </div>
+      </div></div>
+      <div class="col-12 col-sm-6 col-md-3 mb-4"><div class="card">
+        <img src="lapland.jpg" class="card-img-top" alt="Lapland">
+        <div class="card-body"><small>Природа и авантура</small><h4>Lapland, Finland</h4>
+          <p>Снежни шуми, дрвени куќички и поларна светлина.</p>
+          <button class="btn btn-block" onclick="otvoriGalerija('galerija-lapland')">Види слики</button>
+        </div>
+      </div></div>
+    </div>
+  </section>
+<hr>
+  <section id="planer">
+    <h2>Мој планер за патување</h2>
+    <p class="voved">Додај дестинација, број на денови и буџет.</p>
+    <div class="row">
+      <div class="col-md-6 mb-4"><div class="bela-kutija h-100">
+        <h3>Твоето следно патување</h3>
+        <form onsubmit="dodadiDestinacija(); return false;">
+          <label for="posakuvanaDestinacija">Дестинација</label>
+          <input id="posakuvanaDestinacija" type="text" required>
+          <div class="row">
+            <div class="col-sm-6"><label for="brDenovi">Број на денови</label><input id="brDenovi" type="number" min="1" step="1" required></div>
+            <div class="col-sm-6"><label for="planiranBudzet">Буџет (€)</label><input id="planiranBudzet" type="number" min="0" step="1" required></div>
+          </div>
+          <label for="kategorija">Категорија</label>
+          <select id="kategorija"><option>Релаксација</option><option>Луксузен одмор</option><option>Природа и авантура</option><option>Културен туризам</option></select>
+          <button type="submit" class="btn btn-block">Додади дестинација</button>
+        </form>
+      </div></div>
+      <div class="col-md-6 mb-4"><img class="slika-planer" src="sledno.jpg" alt="Positano"></div>
+    </div>
+    <div class="bela-kutija">
+      <h3>Мои дестинации</h3>
+      <form onsubmit="filtriraj(); return false;">
+        <div class="row">
+          <div class="col-md-6"><label for="filterBudzet">Буџет до (€)</label><input id="filterBudzet" type="number" min="0" placeholder="Без ограничување"></div>
+          <div class="col-md-6"><label for="filterKategorija">Категорија</label>
+            <select id="filterKategorija"><option value="">Сите категории</option><option>Релаксација</option><option>Луксузен одмор</option><option>Природа и авантура</option><option>Културен туризам</option></select>
+          </div>
+        </div>
+        <button class="btn" type="submit">Филтрирај</button>
+        <button class="btn" type="button" onclick="resetFiltri()">Ресетирај</button>
+      </form>
+      <div id="listaDestinacii" class="row mt-4">
+        <div class="col-md-4 mb-3 plan-destinacija"><div class="plan-karticka"><h4>Paris</h4><p class="plan-kategorija">Културен туризам</p><p>Денови: 6</p><p>Планиран буџет: <span class="plan-budzet">900</span> €</p><button class="btn btn-sm" onclick="izbrisiDestinacija(this)">Избриши</button></div></div>
+        <div class="col-md-4 mb-3 plan-destinacija"><div class="plan-karticka"><h4>Santorini</h4><p class="plan-kategorija">Релаксација</p><p>Денови: 5</p><p>Планиран буџет: <span class="plan-budzet">700</span> €</p><button class="btn btn-sm" onclick="izbrisiDestinacija(this)">Избриши</button></div></div>
+        <div class="col-md-4 mb-3 plan-destinacija"><div class="plan-karticka"><h4>Lapland</h4><p class="plan-kategorija">Природа и авантура</p><p>Денови: 4</p><p>Планиран буџет: <span class="plan-budzet">1200</span> €</p><button class="btn btn-sm" onclick="izbrisiDestinacija(this)">Избриши</button></div></div>
+      </div>
+      <p id="porakaFilter" class="poraka"></p>
+    </div>
+  </section>
+<hr>
+  <section id="trosoci">
+    <h2>Колку ќе чини твоето патување со багаж?</h2>
+    <div class="bela-kutija row align-items-center">
+      <form class="col-md-6" onsubmit="presmetajPatniTrosoci(); return false;">
+        <label for="cenaBilet">Цена на билет (€)</label><input id="cenaBilet" type="number" min="0" step="1" required>
+        <label for="brojKuferi">Број на куфери</label><input id="brojKuferi" type="number" min="0" step="1" value="0" required>
+        <button class="btn" type="submit">Пресметај</button>
+      </form>
+      <div class="col-md-6"><h3>Билет + куфери</h3><p>Секој куфер чини дополнителни 100 €.</p>
+        <div id="rezultatTrosoci" hidden><p id="prikazBilet"></p><p id="prikazKuferi"></p><strong id="prikazTrosoci"></strong></div>
+      </div>
+    </div>
+  </section>
+<hr>
+  <section id="blog">
+    <h2>Отвори го твојот мал водич</h2>
+    <p class="voved">Кликни на слика за водич со 10 места за разгледување.</p>
+    <div id="izborVodic" class="row izbor-gradovi">
+      <div class="col-6 col-md-3 mb-3">
+        <button type="button" class="grad-kopce" onclick="otvoriVodic('vodic-paris')">
+          <img src="paris.jpg" alt="Paris"><strong>Paris</strong>
+        </button>
+      </div>
+      <div class="col-6 col-md-3 mb-3">
+        <button type="button" class="grad-kopce" onclick="otvoriVodic('vodic-santorini')">
+          <img src="santorini.jpg" alt="Santorini"><strong>Santorini</strong>
+        </button>
+      </div>
+      <div class="col-6 col-md-3 mb-3">
+        <button type="button" class="grad-kopce" onclick="otvoriVodic('vodic-moritz')">
+          <img src="StMoritz.jpg" alt="St. Moritz"><strong>St. Moritz</strong>
+        </button>
+      </div>
+      <div class="col-6 col-md-3 mb-3">
+        <button type="button" class="grad-kopce" onclick="otvoriVodic('vodic-lapland')">
+          <img src="lapland.jpg" alt="Lapland"><strong>Lapland</strong>
+        </button>
+      </div>
+      <div class="col-6 col-md-3 mb-3">
+        <button type="button" class="grad-kopce" onclick="otvoriVodic('vodic-sttropez')">
+          <img src="sttropez.jpg" alt="Saint-Tropez"><strong>Saint-Tropez</strong>
+        </button>
+      </div>
+      <div class="col-6 col-md-3 mb-3">
+        <button type="button" class="grad-kopce" onclick="otvoriVodic('vodic-ibiza')">
+          <img src="ibiza.jpg" alt="Ibiza"><strong>Ibiza</strong>
+        </button>
+      </div>
+      <div class="col-6 col-md-3 mb-3">
+        <button type="button" class="grad-kopce" onclick="otvoriVodic('vodic-colmar')">
+          <img src="colmar1.jpg" alt="Colmar"><strong>Colmar</strong>
+        </button>
+      </div>
+      <div class="col-6 col-md-3 mb-3">
+        <button type="button" class="grad-kopce" onclick="otvoriVodic('vodic-portofino')">
+          <img src="portofino11.jpg" alt="Portofino"><strong>Portofino</strong>
+        </button>
+      </div>
+    </div>
+    <div id="prikazVodic">
+      <p id="porakaVodic" class="beleshka text-center">Избери една дестинација погоре.</p>
+      <article id="vodic-paris" class="vodic" hidden>
+        <h3>Paris: градот што би го разгледувала пеш</h3>
+        <p>Во Paris не би се обидувала да видам сè во еден ден. Би одвоила време за музеј, а потоа би продолжила со прошетка и пауза во некое мало кафуле. Еве ги десетте места што би ги ставила на мојот список:</p>
+        <h4>10 места на мојот список</h4>
+        <ol>
+          <li>Ајфеловата кула — првата станица на мојот список.</li>
+          <li>Лувр — посебен дел од денот би одвоила за музејот.</li>
+          <li>Монмартр — за прошетка низ улиците.</li>
+          <li>Сакре Кер — би го вклучила во прошетката низ Монмартр.</li>
+          <li>Сена — за мирна прошетка покрај реката.</li>
+          <li>Нотр Дам — за разгледување на архитектурата.</li>
+          <li>Луксембуршката градина — место за пауза.</li>
+          <li>Триумфалната капија — уште една станица за фотографирање.</li>
+          <li>Елисејските полиња — за градска прошетка.</li>
+          <li>Музејот Орсе — би го оставила за друг ден.</li>
+        </ol>
+        <p class="beleshka">Мој план: еден ден за музеи, еден за Монмартр и еден за прошетки покрај Сена.</p>
+      </article>
+      <article id="vodic-santorini" class="vodic" hidden>
+        <h3>Santorini: одмор без брзање</h3>
+        <p>Ова патување го замислувам со бавни утра, прошетки и време покрај морето. Не би го исполнувала секој час со активности. Би избрала неколку места за секој ден, а остатокот би го оставила за одмор.</p>
+        <h4>10 места на мојот список</h4>
+        <ol>
+          <li>Оја — за прошетка меѓу белите куќи.</li>
+          <li>Фира — за разгледување на главното место на островот.</li>
+          <li>Имеровигли — за погледи и фотографии.</li>
+          <li>Фиростефани — би го додала во планот за прошетка.</li>
+          <li>Пиргос — за разгледување на поинаков дел од островот.</li>
+          <li>Мегалохори — уште едно село на мојот список.</li>
+          <li>Археолошкиот локалитет Акротири — за ден посветен на историја.</li>
+          <li>Камари — за ден покрај морето.</li>
+          <li>Периса — уште една идеја за плажа.</li>
+          <li>Светилникот кај Акротири — за крај на разгледувањето.</li>
+        </ol>
+        <p class="beleshka">Мој план: еден ден за Оја, еден за Фира и околината, а останатите за плажа и одмор.</p>
+      </article>
+      <article id="vodic-moritz" class="vodic" hidden>
+        <h3>St. Moritz: неколку дена меѓу планини</h3>
+        <p>За St. Moritz би спакувала удобни обувки и топла облека. Во мојот план би имало прошетки, разгледување и паузи за топол пијалак. Изборот на активности би го приспособила на сезоната и времето.</p>
+        <h4>10 места на мојот список</h4>
+        <ol>
+          <li>Езерото St. Moritz — за прошетка покрај брегот.</li>
+          <li>Центарот на St. Moritz — за првото запознавање со местото.</li>
+          <li>Пиз Наир — идеја за планински погледи.</li>
+          <li>Корвиља — би ја разгледала како опција за планински ден.</li>
+          <li>Музејот Сегантини — за дел од денот посветен на уметност.</li>
+          <li>Енгадинскиот музеј — уште една музејска станица.</li>
+          <li>Кривата кула — за кратка станица при разгледувањето.</li>
+          <li>Езерото Штац — идеја за прошетка во природата.</li>
+          <li>Понтрезина — за излет во околината.</li>
+          <li>Силваплана — уште едно место што би го додала на списокот.</li>
+        </ol>
+        <p class="beleshka">Мој план: првиот ден за градот и езерото, а следните за музеи и околината.</p>
+      </article>
+      <article id="vodic-lapland" class="vodic" hidden>
+        <h3>Lapland: зима како од разгледница</h3>
+        <p>За Lapland би избрала едно место за сместување и неколку излети во околината. Не би се обидувала да го обиколам целиот регион за еден викенд. Една вечер би оставила за набљудување на небото, со надеж дека ќе се појави поларна светлина.</p>
+        <h4>10 места на мојот список</h4>
+        <ol>
+          <li>Рованиеми</li>
+          <li>Музејот Арктикум</li>
+          <li>Селото на Дедо Мраз</li>
+          <li>Инари</li>
+          <li>Музејот Сиида</li>
+          <li>Езерото Инари</li>
+          <li>Саариселка</li>
+          <li>Леви</li>
+          <li>Илас</li>
+          <li>Националниот парк Пиха-Луосто</li>
+        </ol>
+        <p class="beleshka">Списокот е избор од целиот регион. Избери неколку блиски места; поларната светлина не е загарантирана.</p>
+      </article>
+      <article id="vodic-sttropez" class="vodic" hidden>
+        <h3>Saint-Tropez: ден покрај француската ривиера</h3>
+        <p>Би почнала со прошетка покрај пристаништето, па би продолжила низ тесните улици на Ла Понш. За попладнето би избрала музеј или пауза покрај морето. Не би го исполнила целиот ден со активности.</p>
+        <h4>10 места за разгледување во местото и околината</h4>
+        <ol>
+          <li>Старото пристаниште</li>
+          <li>Квартот Ла Понш</li>
+          <li>Плажата Ла Понш</li>
+          <li>Плоштадот Place des Lices</li>
+          <li>Цитаделата</li>
+          <li>Поморскиот музеј во Цитаделата</li>
+          <li>Музејот Анoнсијад</li>
+          <li>Камбанаријата на Notre-Dame-de-l’Assomption</li>
+          <li>Кулата Tour du Portalet</li>
+          <li>Раматуел — идеја за излет во околината</li>
+        </ol>
+        <p class="beleshka">Пристаништето и стариот кварт би ги разгледала во ист ден, а излетот во Раматуел би го оставила за друг ден.</p>
+      </article>
+      <article id="vodic-ibiza" class="vodic" hidden>
+        <h3>Ibiza: море, заливи и стар град</h3>
+        <p>За Ibiza би испланирала и прошетка низ стариот град и време за плажа. Ми се допаѓа идејата секој ден да разгледам различен дел од островот, без да брзам од едно место на друго.</p>
+        <h4>10 места за разгледување во местото и околината</h4>
+        <ol>
+          <li>Далт Вила</li>
+          <li>Портал де сес Таулес</li>
+          <li>Катедралата во Ibiza</li>
+          <li>Квартот Ла Марина</li>
+          <li>Санта Гертрудис</li>
+          <li>Санта Еуларија</li>
+          <li>Кала Комте</li>
+          <li>Кала Баса</li>
+          <li>Сес Салинес</li>
+          <li>Поглед кон Ес Ведра од брегот</li>
+        </ol>
+        <p class="beleshka">Еден ден би одвоила за Далт Вила и Ла Марина, а другите за заливите и населбите на островот.</p>
+      </article>
+      <article id="vodic-colmar" class="vodic" hidden>
+        <h3>Colmar: улици што личат на илустрација</h3>
+        <p>Colmar ми е идеја за кратко патување без преполн распоред. Би почнала од стариот град, би продолжила покрај каналите и би одвоила време за музеј. Тука и самата прошетка ми е дел од доживувањето.</p>
+        <h4>10 места на мојот список</h4>
+        <ol>
+          <li>Мала Венеција</li>
+          <li>Кејот на рибарите</li>
+          <li>Улицата Rue des Marchands</li>
+          <li>Куќата Пфистер</li>
+          <li>Музејот Унтерлинден</li>
+          <li>Музејот Бартолди</li>
+          <li>Покриениот пазар</li>
+          <li>Црквата Сен Мартен</li>
+          <li>Куќата Maison des Têtes</li>
+          <li>Квартот на кожарите</li>
+        </ol>
+        <p class="beleshka">Мој план: стариот град и каналите наутро, па музеј и пауза попладне.</p>
+      </article>
+      <article id="vodic-portofino" class="vodic" hidden>
+        <h3>Portofino: малото пристаниште со шарени фасади</h3>
+        <p>Во Portofino би почнала со кафе покрај пристаништето. Потоа би се прошетала до црквата Сан Џорџо и Кастело Браун. За подолг престој би додала некое од блиските места.</p>
+        <h4>10 места за разгледување во местото и околината</h4>
+        <ol>
+          <li>Пристаништето во Portofino</li>
+          <li>Пјацета — плоштадот покрај морето</li>
+          <li>Црквата Сан Џорџо</li>
+          <li>Кастело Браун</li>
+          <li>Светилникот во Portofino</li>
+          <li>Црквата Сан Мартино</li>
+          <li>Бaја Каноне</li>
+          <li>Параџи — во околината</li>
+          <li>Санта Маргерита Лигуре — излет во околината</li>
+          <li>Опатијата Сан Фрутуозо — посебен излет</li>
+        </ol>
+        <p class="beleshka">Првите денови би ги оставила за Portofino и блиската околина. Сан Фрутуозо би го испланирала како посебен излет.</p>
+      </article>
+    </div>
+  </section>
+<hr>
+  <section id="galerija">
+    <h2>Галерија на патувања</h2>
+    <p class="voved"></p>
+    <div id="izborGalerija" class="row izbor-gradovi">
+      <div class="col-6 col-md-3 mb-3">
+        <button type="button" class="grad-kopce" onclick="otvoriGalerija('galerija-paris')">
+          <img src="paris3.jpg" alt="Paris"><strong>Paris</strong>
+        </button>
+      </div>
+      <div class="col-6 col-md-3 mb-3">
+        <button type="button" class="grad-kopce" onclick="otvoriGalerija('galerija-santorini')">
+          <img src="santorini.jpg" alt="Santorini"><strong>Santorini</strong>
+        </button>
+      </div>
+      <div class="col-6 col-md-3 mb-3">
+        <button type="button" class="grad-kopce" onclick="otvoriGalerija('galerija-moritz')">
+          <img src="StMoritz.jpg" alt="St. Moritz"><strong>St. Moritz</strong>
+        </button>
+      </div>
+      <div class="col-6 col-md-3 mb-3">
+        <button type="button" class="grad-kopce" onclick="otvoriGalerija('galerija-lapland')">
+          <img src="lapland.jpg" alt="Lapland"><strong>Lapland</strong>
+        </button>
+      </div>
+      <div class="col-6 col-md-3 mb-3">
+        <button type="button" class="grad-kopce" onclick="otvoriGalerija('galerija-sttropez')">
+          <img src="sttropez.jpg" alt="Saint-Tropez"><strong>Saint-Tropez</strong>
+        </button>
+      </div>
+      <div class="col-6 col-md-3 mb-3">
+        <button type="button" class="grad-kopce" onclick="otvoriGalerija('galerija-ibiza')">
+          <img src="ibiza.jpg" alt="Ibiza"><strong>Ibiza</strong>
+        </button>
+      </div>
+      <div class="col-6 col-md-3 mb-3">
+        <button type="button" class="grad-kopce" onclick="otvoriGalerija('galerija-colmar')">
+          <img src="colmar1.jpg" alt="Colmar"><strong>Colmar</strong>
+        </button>
+      </div>
+      <div class="col-6 col-md-3 mb-3">
+        <button type="button" class="grad-kopce" onclick="otvoriGalerija('galerija-portofino')">
+          <img src="portofino11.jpg" alt="Portofino"><strong>Portofino</strong>
+        </button>
+      </div>
+    </div>
+    <div id="fotografii">
+      <div id="galerija-paris" class="gradska-galerija">
+        <h3>Paris, France</h3>
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <figure class="foto-ramka">
+              <img src="paris11.jpg" alt="Eiffel Tower">
+              <figcaption>Montmartre</figcaption>
+              <div class="reakcii">
+                <button type="button" onclick="dodadiLike('like-0-0')">Like</button> <span id="like-0-0">0</span>
+                <button type="button" onclick="dodadiLike('dislike-0-0')"> Dislike</button> <span id="dislike-0-0">0</span>
+              </div>
+              <form class="komentar-forma" onsubmit="dodadiKomentar('komentar-0-0', 'komentari-0-0'); return false;">
+                <input id="komentar-0-0" type="text" aria-label="Коментар" placeholder="Напиши коментар..." required>
+                <button class="btn btn-sm" type="submit">Додај</button>
+              </form>
+              <ul id="komentari-0-0" class="komentari"></ul>
+            </figure>
+          </div>
+          <div class="col-md-6 mb-4">
+            <figure class="foto-ramka">
+              <img src="paris2.jpg" alt="Paris streets">
+              <figcaption>Louvre museum</figcaption>
+              <div class="reakcii">
+                <button type="button" onclick="dodadiLike('like-0-1')"> Like</button> <span id="like-0-1">0</span>
+                <button type="button" onclick="dodadiLike('dislike-0-1')"> Dislike</button> <span id="dislike-0-1">0</span>
+              </div>
+              <form class="komentar-forma" onsubmit="dodadiKomentar('komentar-0-1', 'komentari-0-1'); return false;">
+                <input id="komentar-0-1" type="text" aria-label="Коментар" placeholder="Напиши коментар..." required>
+                <button class="btn btn-sm" type="submit">Додај</button>
+              </form>
+              <ul id="komentari-0-1" class="komentari"></ul>
+            </figure>
+          </div>
+        </div>
+      </div>
+      <div id="galerija-santorini" class="gradska-galerija" hidden>
+        <h3>Santorini, Greece</h3>
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <figure class="foto-ramka">
+              <img src="s1.jpg" alt="Santorini view">
+              <figcaption>Santorini view</figcaption>
+              <div class="reakcii">
+                <button type="button" onclick="dodadiLike('like-1-0')">Like</button> <span id="like-1-0">0</span>
+                <button type="button" onclick="dodadiLike('dislike-1-0')"> Dislike</button> <span id="dislike-1-0">0</span>
+              </div>
+              <form class="komentar-forma" onsubmit="dodadiKomentar('komentar-1-0', 'komentari-1-0'); return false;">
+                <input id="komentar-1-0" type="text" aria-label="Коментар" placeholder="Напиши коментар..." required>
+                <button class="btn btn-sm" type="submit">Додај</button>
+              </form>
+              <ul id="komentari-1-0" class="komentari"></ul>
+            </figure>
+          </div>
+          <div class="col-md-6 mb-4">
+            <figure class="foto-ramka">
+              <img src="s2.jpg" alt="Island streets">
+              <figcaption>MYLOS</figcaption>
+              <div class="reakcii">
+                <button type="button" onclick="dodadiLike('like-1-1')">Like</button> <span id="like-1-1">0</span>
+                <button type="button" onclick="dodadiLike('dislike-1-1')">Dislike</button> <span id="dislike-1-1">0</span>
+              </div>
+              <form class="komentar-forma" onsubmit="dodadiKomentar('komentar-1-1', 'komentari-1-1'); return false;">
+                <input id="komentar-1-1" type="text" aria-label="Коментар" placeholder="Напиши коментар..." required>
+                <button class="btn btn-sm" type="submit">Додај</button>
+              </form>
+              <ul id="komentari-1-1" class="komentari"></ul>
+            </figure>
+          </div>
+        </div>
+      </div>
+      <div id="galerija-moritz" class="gradska-galerija" hidden>
+        <h3>St. Moritz, Switzerland</h3>
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <figure class="foto-ramka">
+              <img src="sm1.jpg" alt="Alpine landscape">
+              <figcaption>Alpine ski</figcaption>
+              <div class="reakcii">
+                <button type="button" onclick="dodadiLike('like-2-0')"> Like</button> <span id="like-2-0">0</span>
+                <button type="button" onclick="dodadiLike('dislike-2-0')"> Dislike</button> <span id="dislike-2-0">0</span>
+              </div>
+              <form class="komentar-forma" onsubmit="dodadiKomentar('komentar-2-0', 'komentari-2-0'); return false;">
+                <input id="komentar-2-0" type="text" aria-label="Коментар" placeholder="Напиши коментар..." required>
+                <button class="btn btn-sm" type="submit">Додај</button>
+              </form>
+              <ul id="komentari-2-0" class="komentari"></ul>
+            </figure>
+          </div>
+          <div class="col-md-6 mb-4">
+            <figure class="foto-ramka">
+              <img src="sm2.jpg" alt="St. Moritz lake">
+              <figcaption>St. Moritz for Christmas</figcaption>
+              <div class="reakcii">
+                <button type="button" onclick="dodadiLike('like-2-1')"> Like</button> <span id="like-2-1">0</span>
+                <button type="button" onclick="dodadiLike('dislike-2-1')"> Dislike</button> <span id="dislike-2-1">0</span>
+              </div>
+              <form class="komentar-forma" onsubmit="dodadiKomentar('komentar-2-1', 'komentari-2-1'); return false;">
+                <input id="komentar-2-1" type="text" aria-label="Коментар" placeholder="Напиши коментар..." required>
+                <button class="btn btn-sm" type="submit">Додај</button>
+              </form>
+              <ul id="komentari-2-1" class="komentari"></ul>
+            </figure>
+          </div>
+        </div>
+      </div>
+      <div id="galerija-lapland" class="gradska-galerija" hidden>
+        <h3>Lapland, Finland</h3>
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <figure class="foto-ramka">
+              <img src="lapland3.jpg" alt="Santa Claus Village">
+              <figcaption>Inari</figcaption>
+              <div class="reakcii">
+                <button type="button" onclick="dodadiLike('like-3-0')"> Like</button> <span id="like-3-0">0</span>
+                <button type="button" onclick="dodadiLike('dislike-3-0')"> Dislike</button> <span id="dislike-3-0">0</span>
+              </div>
+              <form class="komentar-forma" onsubmit="dodadiKomentar('komentar-3-0', 'komentari-3-0'); return false;">
+                <input id="komentar-3-0" type="text" aria-label="Коментар" placeholder="Напиши коментар..." required>
+                <button class="btn btn-sm" type="submit">Додај</button>
+              </form>
+              <ul id="komentari-3-0" class="komentari"></ul>
+            </figure>
+          </div>
+          <div class="col-md-6 mb-4">
+            <figure class="foto-ramka">
+              <img src="lapland22.jpg" alt="Inari">
+              <figcaption>Santa Claus Village</figcaption>
+              <div class="reakcii">
+                <button type="button" onclick="dodadiLike('like-3-1')">Like</button> <span id="like-3-1">0</span>
+                <button type="button" onclick="dodadiLike('dislike-3-1')"> Dislike</button> <span id="dislike-3-1">0</span>
+              </div>
+              <form class="komentar-forma" onsubmit="dodadiKomentar('komentar-3-1', 'komentari-3-1'); return false;">
+                <input id="komentar-3-1" type="text" aria-label="Коментар" placeholder="Напиши коментар..." required>
+                <button class="btn btn-sm" type="submit">Додај</button>
+              </form>
+              <ul id="komentari-3-1" class="komentari"></ul>
+            </figure>
+          </div>
+        </div>
+      </div>
+      <div id="galerija-sttropez" class="gradska-galerija" hidden>
+        <h3>Saint-Tropez, France</h3>
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <figure class="foto-ramka">
+              <img src="sttropez1.jpg" alt="Saint-Tropez">
+              <figcaption>Saint-Tropez</figcaption>
+              <div class="reakcii">
+                <button type="button" onclick="dodadiLike('like-4-0')">Like</button> <span id="like-4-0">0</span>
+                <button type="button" onclick="dodadiLike('dislike-4-0')">Dislike</button> <span id="dislike-4-0">0</span>
+              </div>
+              <form class="komentar-forma" onsubmit="dodadiKomentar('komentar-4-0', 'komentari-4-0'); return false;">
+                <input id="komentar-4-0" type="text" aria-label="Коментар" placeholder="Напиши коментар..." required>
+                <button class="btn btn-sm" type="submit">Додај</button>
+              </form>
+              <ul id="komentari-4-0" class="komentari"></ul>
+            </figure>
+          </div>
+          <div class="col-md-6 mb-4">
+            <figure class="foto-ramka">
+              <img src="sttropez2.jpg" alt="Ramatuelle">
+              <figcaption>Ramatuelle</figcaption>
+              <div class="reakcii">
+                <button type="button" onclick="dodadiLike('like-4-1')"> Like</button> <span id="like-4-1">0</span>
+                <button type="button" onclick="dodadiLike('dislike-4-1')"> Dislike</button> <span id="dislike-4-1">0</span>
+              </div>
+              <form class="komentar-forma" onsubmit="dodadiKomentar('komentar-4-1', 'komentari-4-1'); return false;">
+                <input id="komentar-4-1" type="text" aria-label="Коментар" placeholder="Напиши коментар..." required>
+                <button class="btn btn-sm" type="submit">Додај</button>
+              </form>
+              <ul id="komentari-4-1" class="komentari"></ul>
+            </figure>
+          </div>
+        </div>
+      </div>
+      <div id="galerija-ibiza" class="gradska-galerija" hidden>
+        <h3>Ibiza, Spain</h3>
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <figure class="foto-ramka">
+              <img src="ibiza1.jpg" alt="Ibiza">
+              <figcaption>Ibiza</figcaption>
+              <div class="reakcii">
+                <button type="button" onclick="dodadiLike('like-5-0')">Like</button> <span id="like-5-0">0</span>
+                <button type="button" onclick="dodadiLike('dislike-5-0')"> Dislike</button> <span id="dislike-5-0">0</span>
+              </div>
+              <form class="komentar-forma" onsubmit="dodadiKomentar('komentar-5-0', 'komentari-5-0'); return false;">
+                <input id="komentar-5-0" type="text" aria-label="Коментар" placeholder="Напиши коментар..." required>
+                <button class="btn btn-sm" type="submit">Додај</button>
+              </form>
+              <ul id="komentari-5-0" class="komentari"></ul>
+            </figure>
+          </div>
+          <div class="col-md-6 mb-4">
+            <figure class="foto-ramka">
+              <img src="ibiza2.jpg" alt="Old Town">
+              <figcaption>Old Town</figcaption>
+              <div class="reakcii">
+                <button type="button" onclick="dodadiLike('like-5-1')"> Like</button> <span id="like-5-1">0</span>
+                <button type="button" onclick="dodadiLike('dislike-5-1')"> Dislike</button> <span id="dislike-5-1">0</span>
+              </div>
+              <form class="komentar-forma" onsubmit="dodadiKomentar('komentar-5-1', 'komentari-5-1'); return false;">
+                <input id="komentar-5-1" type="text" aria-label="Коментар" placeholder="Напиши коментар..." required>
+                <button class="btn btn-sm" type="submit">Додај</button>
+              </form>
+              <ul id="komentari-5-1" class="komentari"></ul>
+            </figure>
+          </div>
+        </div>
+      </div>
+      <div id="galerija-colmar" class="gradska-galerija" hidden>
+        <h3>Colmar, France</h3>
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <figure class="foto-ramka">
+              <img src="colmar2.jpg" alt="Colmar">
+              <figcaption>Colmar</figcaption>
+              <div class="reakcii">
+                <button type="button" onclick="dodadiLike('like-6-0')"> Like</button> <span id="like-6-0">0</span>
+                <button type="button" onclick="dodadiLike('dislike-6-0')"> Dislike</button> <span id="dislike-6-0">0</span>
+              </div>
+              <form class="komentar-forma" onsubmit="dodadiKomentar('komentar-6-0', 'komentari-6-0'); return false;">
+                <input id="komentar-6-0" type="text" aria-label="Коментар" placeholder="Напиши коментар..." required>
+                <button class="btn btn-sm" type="submit">Додај</button>
+              </form>
+              <ul id="komentari-6-0" class="komentari"></ul>
+            </figure>
+          </div>
+          <div class="col-md-6 mb-4">
+            <figure class="foto-ramka">
+              <img src="colmar1.jpg" alt="Pfister House">
+              <figcaption>Pfister House</figcaption>
+              <div class="reakcii">
+                <button type="button" onclick="dodadiLike('like-6-1')">Like</button> <span id="like-6-1">0</span>
+                <button type="button" onclick="dodadiLike('dislike-6-1')"> Dislike</button> <span id="dislike-6-1">0</span>
+              </div>
+              <form class="komentar-forma" onsubmit="dodadiKomentar('komentar-6-1', 'komentari-6-1'); return false;">
+                <input id="komentar-6-1" type="text" aria-label="Коментар" placeholder="Напиши коментар..." required>
+                <button class="btn btn-sm" type="submit">Додај</button>
+              </form>
+              <ul id="komentari-6-1" class="komentari"></ul>
+            </figure>
+          </div>
+        </div>
+      </div>
+      <div id="galerija-portofino" class="gradska-galerija" hidden>
+        <h3>Portofino, Italy</h3>
+        <div class="row">
+          <div class="col-md-6 mb-4">
+            <figure class="foto-ramka">
+              <img src="portofino1.jpg" alt="Portofino">
+              <figcaption>Portofino</figcaption>
+              <div class="reakcii">
+                <button type="button" onclick="dodadiLike('like-7-0')"> Like</button> <span id="like-7-0">0</span>
+                <button type="button" onclick="dodadiLike('dislike-7-0')">Dislike</button> <span id="dislike-7-0">0</span>
+              </div>
+              <form class="komentar-forma" onsubmit="dodadiKomentar('komentar-7-0', 'komentari-7-0'); return false;">
+                <input id="komentar-7-0" type="text" aria-label="Коментар" placeholder="Напиши коментар..." required>
+                <button class="btn btn-sm" type="submit">Додај</button>
+              </form>
+              <ul id="komentari-7-0" class="komentari"></ul>
+            </figure>
+          </div>
+          <div class="col-md-6 mb-4">
+            <figure class="foto-ramka">
+              <img src="portofino2.jpg" alt="Castello Brown">
+              <figcaption>Castello Brown</figcaption>
+              <div class="reakcii">
+                <button type="button" onclick="dodadiLike('like-7-1')"> Like</button> <span id="like-7-1">0</span>
+                <button type="button" onclick="dodadiLike('dislike-7-1')">Dislike</button> <span id="dislike-7-1">0</span>
+              </div>
+              <form class="komentar-forma" onsubmit="dodadiKomentar('komentar-7-1', 'komentari-7-1'); return false;">
+                <input id="komentar-7-1" type="text" aria-label="Коментар" placeholder="Напиши коментар..." required>
+                <button class="btn btn-sm" type="submit">Додај</button>
+              </form>
+              <ul id="komentari-7-1" class="komentari"></ul>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+<hr>
+  <section id="anketa">
+    <h2>Како ти се допадна страницата?</h2>
+    <div class="belaKutija">
+      <form id="formaAnketa" onsubmit="ispratiAnketa(); return false;">
+        <label for="ime">Име</label><input id="ime" type="text" required>
+        <label for="email">Е-пошта</label><input id="email" type="email" required>
+        <label for="tip">Каков тип патување би избрале?</label>
+        <select id="tip"><option>Релаксација</option><option>Луксузен одмор</option><option>Природа и авантура</option><option>Културен туризам</option></select>
+        <fieldset class="prasanje"><legend>Која дестинација би ја избрале?</legend>
+          <label><input type="radio" name="grad" value="Paris" required> Paris</label>
+          <label><input type="radio" name="grad" value="Santorini"> Santorini</label>
+          <label><input type="radio" name="grad" value="St. Moritz"> St. Moritz</label>
+          <label><input type="radio" name="grad" value="Lapland"> Lapland</label>
+          <label><input type="radio" name="grad" value="Saint-Tropez"> Saint-Tropez</label>
+          <label><input type="radio" name="grad" value="Ibiza"> Ibiza</label>
+          <label><input type="radio" name="grad" value="Colmar"> Colmar</label>
+          <label><input type="radio" name="grad" value="Portofino"> Portofino</label>
+        </fieldset>
+        <fieldset class="prasanje"><legend>Што најмногу ви се допадна?</legend>
+          <label><input type="checkbox" name="dopadnato" value="Дизајнот"> Дизајнот</label>
+          <label><input type="checkbox" name="dopadnato" value="Планерот"> Планерот</label>
+          <label><input type="checkbox" name="dopadnato" value="Галеријата"> Галеријата</label>
+          <label><input type="checkbox" name="dopadnato" value="Водичот"> Водичот</label>
+        </fieldset>
+        <label for="ocena">Оцена: <span id="vrednostOcena">8</span> / 10</label>
+        <input id="ocena" type="range" min="1" max="10" value="8" oninput="prikaziOcena()">
+        <label for="komentar">Што би промениле?</label><textarea id="komentar" rows="3" placeholder="Ваш предлог"></textarea>
+        <button class="btn" type="submit">Испрати анкета</button>
+      </form>
+      <div id="rezultatAnketa" hidden><h3>Твоите одговори</h3><p id="anketaPoraka"></p><ul id="odgovoriAnketa"></ul>
+        <p>Одговорите се прикажани само тука, не се испраќаат на сервер.</p>
+      </div>
+    </div>
+  </section>
+<hr>
+  <section id="najava">
+    <div class="row">
+      <div class="col-md-7 mb-3"><img class="slika-najava" src="travel.jpg.png" alt="Portofino"></div>
+      <div class="col-md-5"><div class="bela-kutija">
+        <h2>Најава</h2>
+        <form onsubmit="najava(); return false;">
+          <label for="korisnickoIme">Корисничко име</label><input id="korisnickoIme" type="text" required>
+          <label for="lozinka">Лозинка</label><input id="lozinka" type="password" required>
+          <button class="btn btn-block" type="submit">Најави се</button>
+        </form>
+        <p id="porakaNajava" class="poraka"></p>
+      </div></div>
+    </div>
+  </section>
+</main>
+<footer>
+  <h3>Travel Planner</h3>
+  <p>About Us · Contact </p>
+  <a href="#vrv">Почетна</a>
+</footer>
+</body>
+</html>
